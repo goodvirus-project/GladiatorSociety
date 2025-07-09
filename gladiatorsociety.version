@@ -1,0 +1,12 @@
+{
+
+    "masterVersionFile":"https://raw.githubusercontent.com/Snrasha/GladiatorSociety/master/gladiatorsociety.version",
+    "modName":"Gladiator Society",
+    "modThreadId":13457,
+    "modVersion":
+    {
+        "major":1,
+        "minor":3,
+        "patch":1
+    }
+}
