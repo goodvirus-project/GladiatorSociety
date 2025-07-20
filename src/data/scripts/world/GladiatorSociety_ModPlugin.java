@@ -17,12 +17,29 @@ import com.thoughtworks.xstream.XStream;
 import src.data.utils.GladiatorSociety_Constants;
 import src.data.utils.GladiatorSociety_XStreamConfig;
 
-public class GladiatorSociety_ModPlugin extends BaseModPlugin {
+// No special imports needed for version checker when using reflection
 
+public class GladiatorSociety_ModPlugin extends BaseModPlugin {
+    private static final String VERSION_FILE = "gladiatorsociety.version";
+    private static final Logger LOG = Global.getLogger(GladiatorSociety_ModPlugin.class);
 
     @Override
     public void configureXStream(XStream x) {
         GladiatorSociety_XStreamConfig.configureXStream(x);
+    }
+    
+    @Override
+    public void onApplicationLoad() {
+        // Version checker support - using reflection to avoid direct dependencies
+        try {
+            Class<?> vc = Global.getSettings().getScriptClassLoader().loadClass("org.lazywizard.versionchecker.Version");
+            java.lang.reflect.Method method = vc.getMethod("addVersionCheck", String.class, String.class);
+            method.invoke(null, Global.getSettings().getModManager().getModSpec("gladiatorsociety").getPath(), VERSION_FILE);
+            LOG.info("Version checker registered for Gladiator Society");
+        } catch (Exception ex) {
+            // Version checker not installed or error occurred, ignore
+            LOG.info("Version checker not installed or error occurred, skipping version check");
+        }
     }
 
     @Override
@@ -37,7 +54,7 @@ public class GladiatorSociety_ModPlugin extends BaseModPlugin {
         player.setRelationship(GladiatorSociety_Constants.GSFACTION_ID, -1f);
     }
 
-    private static Logger LOG = Global.getLogger(GladiatorSociety_ModPlugin.class);
+    // Logger is now defined at the top of the class
 
     @Override
     public PluginPick<ShipAIPlugin> pickShipAI(FleetMemberAPI member, ShipAPI ship) {

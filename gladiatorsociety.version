@@ -1,5 +1,4 @@
 {
-
     "masterVersionFile":"https://raw.githubusercontent.com/goodvirus-project/GladiatorSociety/master/gladiatorsociety.version",
     "modName":"Gladiator Society",
     "modThreadId":33586,
@@ -8,7 +7,7 @@
         "major":1,
         "minor":3,
         "patch":2
-    }
+    },
+    "starsectorVersion":"0.98a",
+    "directDownloadURL":"https://github.com/goodvirus-project/GladiatorSociety/releases/download/1.3.2/GladiatorSociety.zip"
 }
-"starsectorVersion":"0.98a",
-"directDownloadURL":"https://github.com/goodvirus-project/GladiatorSociety/releases/download/1.3.2/GladiatorSociety.zip",
