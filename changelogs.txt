@@ -1,3 +1,13 @@
+Version 1.3.2:
+- Added new Blueprint Reward System to Endless Battle mode
+- Every 3 rounds in Endless Battle now rewards a blueprint based on current credit value
+- Existing reward system remains for now but will be removed once the new system is fully refined
+- Fixed issues with rule commands in dialog system
+- Updated ship and weapon IDs to match actual game files
+- Added more variety to fighter wing rewards
+- Improved reward scaling with battle difficulty
+- Fixed compatibility issues with Starsector 0.98a
+
 Version 1.3.1:
 - Updated for compatibility with Starsector 0.98a.
 - Fixed JSON syntax error in mod_info.json.
@@ -221,4 +231,4 @@ Version 0.2:
 -This version do not change your current game, you will need a new game for see theses effects. He do not break your current save
 -Increase the number of Level of the player for highter missions.
 -For chain of missions, add a TAG "needBounty":"missionid", if put, he will ignore the bounty at least you have done the mission of the missionid  
--Bounty on the market do not respawn after 1 days but 5 days, now. 
+-Bounty on the market do not respawn after 1 days but 5 days, now.

@@ -53,6 +53,14 @@ public class GladiatorSociety_EndlessContent {
 
     public void incEndlessRound() {
         endlessRound++;
+        
+        // Prüfe Blueprint-Belohnung alle 3 Runden
+        if (GladiatorSociety_BlueprintRewardSystem.shouldGiveBlueprintReward(endlessRound)) {
+            int creditReward = getEndlessReward();
+            GladiatorSociety_BlueprintRewardSystem.giveBlueprintReward(creditReward, 
+                Global.getSector().getPlayerFleet().getCargo());
+        }
+        
         addEndlessPower();
         setRandomFaction();
     }
