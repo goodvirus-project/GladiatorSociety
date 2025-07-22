@@ -62,54 +62,11 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
             case "Accept":
                 accept(dialog, memoryMap.get(MemKeys.LOCAL));
                 return true;
-            case "Reward":
-                reward(dialog, memoryMap.get(MemKeys.LOCAL));
-                return true;
+            // Reward case removed - rewards are now given automatically
             case "Increment":
                 endcontent.incEndlessRound();
                 return true;
-            case "Choice":
-                int num = -1;
-                if (params.size() > 1) {
-                    num = (int) params.get(1).getFloat(memoryMap);
-                } else {
-                    return true;
-                }
-                GladiatorSociety_EndlessReward reward = endcontent.getCurrentRewardList().get(num);
-
-                endcontent.addTakenReward(reward.id_Reward);
-
-                switch (reward.rewardType) {
-                    case 2:
-                        if (reward.blueprint) {
-                            Global.getSector().getPlayerFleet().getCargo().addSpecial(new SpecialItemData(Items.WEAPON_BP, reward.id_Resource), reward.number);
-                        } else {
-                            Global.getSector().getPlayerFleet().getCargo().addWeapons(reward.id_Resource, reward.number);
-                        }
-                        break;
-                    case 3:
-                        if (reward.blueprint) {
-                            Global.getSector().getPlayerFleet().getCargo().addSpecial(new SpecialItemData(Items.FIGHTER_BP, reward.id_Resource), reward.number);
-                        } else {
-                            Global.getSector().getPlayerFleet().getCargo().addFighters(reward.id_Resource, reward.number);
-                        }
-                        break;
-                    case 4:
-                        Global.getSector().getPlayerFleet().getFleetData().addFleetMember(reward.id_Resource);
-                        break;
-                    case 5:
-                        Global.getSector().getPlayerFleet().getCargo().addHullmods(reward.id_Resource, reward.number);
-                        break;
-                    case 6:
-                        Global.getSector().getPlayerFleet().getCargo().addSpecial(new SpecialItemData(Items.INDUSTRY_BP, reward.id_Resource), reward.number);
-                        break;
-                    case 7:
-                        Global.getSector().getPlayerFleet().getCargo().addSpecial(new SpecialItemData(Items.SHIP_BP, reward.id_Resource), reward.number);
-                        break;
-                    default:
-                        break;
-                }
-                return true;
+            // Choice case removed - rewards are now given automatically
 
         }
 
@@ -185,15 +142,7 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
         opts.setShortcut("AcceptEndless", Keyboard.KEY_G,
                 false, false, false, false);
 
-        if (endcontent.canHaveReward()) {
-            opts.addOption("Reward", "RewardEndless", "List special reward");
-            opts.setEnabled("RewardEndless", true);
-        } else {
-            opts.addOption("Reward", "RewardEndless", "No reward available or no space available");
-            opts.setEnabled("RewardEndless", false);
-        }
-        opts.setShortcut("RewardEndless", Keyboard.KEY_F,
-                false, false, false, false);
+        // Reward button removed - rewards are now given automatically
         if (Global.getSettings().isDevMode()) {
             opts.addOption(">> (dev) Increment", "DevIncEndless", "Clic on the button will have the same effect than beat a round.");
             opts.setShortcut("AcceptEndless", Keyboard.KEY_D,
@@ -206,56 +155,7 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
                 false, false, false, false);
     }
 
-    public void reward(InteractionDialogAPI dialog, MemoryAPI memory) {
-
-        OptionPanelAPI opts = dialog.getOptionPanel();
-        opts.clearOptions();
-
-        List<GladiatorSociety_EndlessReward> list = endcontent.getCurrentRewardList();
-        int inc = 0;
-        for (GladiatorSociety_EndlessReward reward : list) {
-            String text;
-            switch (reward.rewardType) {
-                case 2:
-                    if (reward.blueprint) {
-                        text = "Weapon Blueprint";
-                    } else {
-                        text = "Weapon";
-                    }
-                    break;
-                case 3:
-                    if (reward.blueprint) {
-                        text = "Fighter Blueprint";
-                    } else {
-                        text = "Fighter";
-                    }
-                    break;
-                case 4:
-                    text = "Ship";
-                    break;
-                case 5:
-                    text = "Hullmod";
-                    break;
-                case 6:
-                    text = "Industry Blueprint";
-                    break;
-                case 7:
-                    text = "Ship Blueprint";
-                    break;
-                default:
-                    text = "Unknown";
-            }
-            opts.addOption(text, "endless_reward" + inc, reward.description);
-            inc++;
-        }
-
-        String exitOpt = "gladiatorComRelay";
-
-        opts.addOption(Misc.ucFirst("back"), exitOpt);
-        opts.setShortcut(exitOpt, Keyboard.KEY_ESCAPE,
-                false, false, false, false);
-
-    }
+    // Reward method removed - rewards are now given automatically
 
     public void accept(InteractionDialogAPI dialog, MemoryAPI memory) {
 
