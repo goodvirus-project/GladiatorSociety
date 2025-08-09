@@ -1,0 +1,11 @@
+{
+  "whitelist": [
+    "hegemony", "tritachyon", "persean", "independent", "pirates"
+  ],
+  "blacklist": [
+    "player", "neutral"
+  ],
+  "includeHidden": false,
+  "minFleetPointsForValidity": 20,
+  "debug": false
+}

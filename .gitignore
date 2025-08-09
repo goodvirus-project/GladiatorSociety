@@ -1,0 +1,70 @@
+# Gradle (ignore all Gradle-related files and outputs)
+**/.gradle/
+**/gradle/
+gradlew
+gradlew.bat
+
+# Build outputs
+**/build/
+**/out/
+**/bin/
+target/
+classes/
+dist/
+
+# Local gradle project (do not publish)
+gradle-project/.gradle/
+gradle-project/build/
+gradle-project/gradle.properties
+
+# Keep: core mod content (these remain tracked by default)
+!/**/com/
+!/**/data/
+!/**/graphics/
+!/**/jars/
+!/**/src/
+!/changelogs.txt
+!/credits.txt
+!/gladiatorsociety.version
+!/icon.png
+!/mod_info.json
+!/ModdersReadme.txt
+
+# IDE settings
+**/.idea/
+**/.vscode/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.project
+.classpath
+.settings/
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Java/bytecode
+*.class
+
+# Logs and crash dumps
+*.log
+logs/
+hs_err_pid*
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.tar.gz
+
+# Editor/Temp files
+*.tmp
+*.swp
+*.swo
+~$*
+
+# Mod output

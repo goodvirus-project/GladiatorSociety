@@ -54,3 +54,10 @@ gladiator_ERList2,DialogOptionSelected,$option == endless_reward2,"GladiatorSoci
 FireAll GladiatorEndless",,,
 gladiator_ERList3,DialogOptionSelected,$option == endless_reward3,"GladiatorSociety_GladiatorEndless Choice 3
 FireAll GladiatorEndless",,,
+,,,,,,
+# Gladiator Fleet Battles
+gladiator_FleetOption,GladiatorComRelay,,SetShortcut gladiatorFleetBattles H,,20:gladiatorFleetBattles:Fleet Battles,
+gladiator_Fleet,DialogOptionSelected,$option == gladiatorFleetBattles,FireAll GladiatorFleetBattles,,,
+gladiator_FleetByTrigger,GladiatorFleetBattles,,GladiatorSociety_GladiatorFleetBattles Display,"Fight alongside an allied fleet against an ever-growing enemy. Each round increases both allied and enemy strength.",,
+gladiator_FleetAccept,DialogOptionSelected,$option == AcceptFleetBattle,GladiatorSociety_GladiatorFleetBattles Accept,,,
+gladiator_FleetIncrement,DialogOptionSelected,$option == DevIncFleetBattle,GladiatorSociety_GladiatorFleetBattles Increment,,,

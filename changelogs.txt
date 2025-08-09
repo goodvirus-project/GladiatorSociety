@@ -1,3 +1,18 @@
+Version 1.3.4:
+-- Note: Not fully ready for public release yet; the public release is coming soon.
+-- Performance: Additional optimizations are in progress.
+-- Dependencies: Requires Nexerelin. LazyLib has been added as a dependency but is not yet used.
+- Added Fleet Battles improvements: allied fleet now reliably spawns and joins battles alongside the player.
+- Deployment points now correctly count allied ships on the player side.
+- Implemented Fleet Battles reward flow: periodic blueprint rewards and random unique ship rewards based on defeated enemy composition.
+- Credit rewards in Fleet Battles slightly reduced vs Endless to account for ally support.
+- Fixed stability issues in fleet spawning and improved diagnostic messages.
+ - Dynamic Mod Faction Detection: runtime scan of all loaded factions (vanilla + modded), filtered via `data/config/gs_factions.json`.
+ - 50/50 vanilla vs modded faction selection for both Fleet Battles and Endless Mode, with robust fallbacks if a bucket is empty.
+ - Auto-refresh of discovered factions when mods are added/removed (cache updates automatically on next access).
+ - Endless Mode now uses the dynamic faction pool for enemy selection (CSV whitelist no longer required for factions).
+ - Improved spawn robustness and null-guards to avoid crashes when a faction can't produce a fleet; safe cancellation and cleanup.
+
 Version 1.3.3:
 - Completely removed the old dialog-based reward system
 - All rewards are now given automatically when reaching specific rounds

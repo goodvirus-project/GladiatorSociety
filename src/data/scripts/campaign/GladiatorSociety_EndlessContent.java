@@ -101,19 +101,43 @@ public class GladiatorSociety_EndlessContent {
      * Sets a random faction for the next round
      */
     private void setRandomFaction() {
-        WeightedRandomPicker<String> picker = new WeightedRandomPicker<>();
-        Set<String> endlessfaction = GladiatorSociety_JSONBountyRead.getAllEndlessFactionCopy();
-        for (String fac : endlessfaction) {
-            picker.add(fac, 1);
-        }
-        if (picker.isEmpty()) {
+        // Use dynamic discovery pool; split into vanilla vs modded with 50/50 selection and fallbacks
+        Set<String> pool = GladiatorSociety_FactionDiscovery.getCombatFactions();
+        if (pool == null || pool.isEmpty()) {
             nextFaction = Factions.PIRATES;
             return;
         }
-        nextFaction = picker.pick();
-        if (nextFaction == null) {
-            nextFaction = Factions.PIRATES;
+
+        // Vanilla set mirrors FleetBattleContent
+        Set<String> vanilla = new java.util.HashSet<>();
+        vanilla.add(Factions.HEGEMONY);
+        vanilla.add(Factions.TRITACHYON);
+        vanilla.add(Factions.PERSEAN);
+        vanilla.add(Factions.PIRATES);
+        vanilla.add(Factions.INDEPENDENT);
+        vanilla.add(Factions.LUDDIC_CHURCH);
+        vanilla.add(Factions.LUDDIC_PATH);
+        vanilla.add(Factions.DIKTAT);
+        vanilla.add(Factions.LIONS_GUARD);
+
+        java.util.List<String> vanillaBucket = new java.util.ArrayList<>();
+        java.util.List<String> moddedBucket = new java.util.ArrayList<>();
+        for (String id : pool) {
+            if (vanilla.contains(id)) vanillaBucket.add(id); else moddedBucket.add(id);
         }
+
+        java.util.function.Function<java.util.List<String>, String> pickFrom = list -> {
+            if (list == null || list.isEmpty()) return null;
+            WeightedRandomPicker<String> p = new WeightedRandomPicker<>();
+            for (String id : list) p.add(id, 1f);
+            return p.pick();
+        };
+
+        boolean useModded = Math.random() < 0.5;
+        String picked = useModded ? pickFrom.apply(moddedBucket) : pickFrom.apply(vanillaBucket);
+        if (picked == null) picked = useModded ? pickFrom.apply(vanillaBucket) : pickFrom.apply(moddedBucket);
+        if (picked == null) picked = Factions.PIRATES;
+        nextFaction = picked;
     }
 
     /**
