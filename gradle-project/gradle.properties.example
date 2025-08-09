@@ -1,5 +1,0 @@
-# Copy this file to gradle.properties and set STARSECTOR_DIR to your Starsector installation path.
-# Example (Windows Steam default):
-# STARSECTOR_DIR=C:/Program Files (x86)/Steam/steamapps/common/Starsector
-
-STARSECTOR_DIR=
