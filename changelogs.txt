@@ -1,6 +1,4 @@
 Version 1.3.4:
--- Note: Not fully ready for public release yet; the public release is coming soon.
--- Performance: Additional optimizations are in progress.
 -- Dependencies: Requires Nexerelin. LazyLib has been added as a dependency but is not yet used.
 - Added Fleet Battles improvements: allied fleet now reliably spawns and joins battles alongside the player.
 - Deployment points now correctly count allied ships on the player side.
