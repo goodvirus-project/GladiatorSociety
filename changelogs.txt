@@ -1,4 +1,4 @@
-Version 1.3.4f (hotfix):
+Version 1.3.5 (hotfix):
 - Endless Mode: added null-safety when starting duels to prevent a rare crash if the enemy fleet could not be generated.
 - Added safe faction fallbacks (pirates → independent) during fleet generation to increase robustness.
 - Shows a clear message and cancels gracefully if fleet generation still fails, instead of crashing.

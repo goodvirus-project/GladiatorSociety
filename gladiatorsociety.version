@@ -6,9 +6,9 @@
     {
         "major":1,
         "minor":3,
-        "patch":4
+        "patch":5
     },
-    "modVersionString":"1.3.4f",
+    "modVersionString":"1.3.5",
     "starsectorVersion":"0.98a",
-    "directDownloadURL":"https://github.com/goodvirus-project/GladiatorSociety/releases/download/1.3.4f/GladiatorSociety.zip"
+    "directDownloadURL":"https://github.com/goodvirus-project/GladiatorSociety/releases/download/1.3.5/GladiatorSociety.zip"
 }

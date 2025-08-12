@@ -1,0 +1,57 @@
+plugins {
+    id 'java'
+}
+
+// Resolve Starsector install dir from -PstarsectorDir, env var, or a common default
+def starsectorDir = findProperty('starsectorDir') ?: System.getenv('STARSECTOR_DIR') ?: 'C:/Program Files (x86)/Fractal Softworks/Starsector'
+
+repositories {
+    // Not needed; we compile only against local jars
+}
+
+sourceSets {
+    main {
+        java {
+            // Include both trees: your main code under src/, and the one-off file under com/
+            srcDirs = ['../src', '../com']
+        }
+    }
+}
+
+configurations {
+    compileOnly.extendsFrom annotationProcessor
+}
+
+dependencies {
+    // Compile against all Starsector core jars
+    compileOnly fileTree(dir: "${starsectorDir}/starsector-core", include: ['*.jar'])
+    // Optionally compile against LazyLib/Nex if you want (not required to build)
+    // compileOnly fileTree(dir: "${starsectorDir}/mods/LazyLib/jars", include: ['*.jar'])
+    // compileOnly fileTree(dir: "${starsectorDir}/mods/Nexerelin/jars", include: ['*.jar'])
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    // Starsector is Java 7/8 level
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+    // On JDK 9+, ensure proper boot classpath targeting Java 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.release = 8
+    }
+}
+
+tasks.register('copyJarToMod', Copy) {
+    dependsOn tasks.jar
+    from tasks.jar.outputs
+    into file('../jars')
+}
+
+jar {
+    archiveFileName = 'GladiatorSocietyJar.jar'
+    // no manifest needed unless you require a Main-Class
+}
+
+tasks.build {
+    dependsOn tasks.copyJarToMod
+}
