@@ -205,7 +205,13 @@ public class GladiatorSociety_GladiatorFleetBattles extends BaseCommandPlugin {
                 if (plugin.getContext() instanceof FleetEncounterContext) {
                     FleetEncounterContext context = (FleetEncounterContext) plugin.getContext();
                     if (context.didPlayerWinEncounterOutright()) {
-                        int payment = (int) (content.getCreditReward() * context.getBattle().getPlayerInvolvementFraction());
+                        float involvement = 1f;
+                        try {
+                            if (context.getBattle() != null) {
+                                involvement = context.getBattle().getPlayerInvolvementFraction();
+                            }
+                        } catch (Throwable ignored) {}
+                        int payment = (int) (content.getCreditReward() * involvement);
                         Global.getSector().getPlayerFleet().getCargo().getCredits().add(payment);
                         // Try to award a unique ship based on the defeated enemy composition (budget scales with round)
                         int budgetFP = Math.min(10 + content.getRound() * 3, 60);

@@ -166,6 +166,12 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
 
         final SectorEntityToken entity = dialog.getInteractionTarget();
         final CampaignFleetAPI endlessfleet = spawnFleet(endcontent);
+        // Safety: if fleet couldn't be generated, bail gracefully to avoid NPE in FID init
+        if (endlessfleet == null) {
+            dialog.getTextPanel().addParagraph("Error: could not generate a gladiator fleet. Please try again.", Color.RED);
+            dialog.dismiss();
+            return;
+        }
 
         dialog.setInteractionTarget(endlessfleet);
 
@@ -218,9 +224,15 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
                 if (plugin.getContext() instanceof FleetEncounterContext) {
                     FleetEncounterContext context = (FleetEncounterContext) plugin.getContext();
                     if(context.didPlayerWinEncounterOutright())
-                    {
-                    //if (context.didPlayerWinEncounter()) {
-                        int payment = (int) (endcontent.getEndlessReward() * context.getBattle().getPlayerInvolvementFraction());
+                 {
+                 //if (context.didPlayerWinEncounter()) {
+                        float involvement = 1f;
+                        try {
+                            if (context.getBattle() != null) {
+                                involvement = context.getBattle().getPlayerInvolvementFraction();
+                            }
+                        } catch (Throwable ignored) {}
+                        int payment = (int) (endcontent.getEndlessReward() * involvement);
                         Global.getSector().getPlayerFleet().getCargo().getCredits().add(payment);
                         endcontent.incEndlessRound();
                         
@@ -241,10 +253,20 @@ public class GladiatorSociety_GladiatorEndless extends BaseCommandPlugin {
 
     private FactionAPI pickFaction(GladiatorSociety_EndlessContent content) {
         FactionAPI faction = Global.getSector().getFaction(content.getEndlessFaction());
+        // Fallbacks: ensure a valid vanilla faction is used if configured one is missing
+        if (faction == null) {
+            faction = Global.getSector().getFaction("pirates");
+        }
+        if (faction == null) {
+            faction = Global.getSector().getFaction("independent");
+        }
         return faction;
     }
 
     private PersonAPI initPerson(FactionAPI faction) {
+        if (faction == null) {
+            faction = Global.getSector().getFaction("independent");
+        }
         float level = ((OfficerLevelupPlugin) Global.getSettings().getPlugin("officerLevelUp")).getMaxLevel(null);
         int personLevel = (int) (5 + level * 1.5f);
         return OfficerManagerEvent.createOfficer(Global.getSector().getFaction(faction.getId()),

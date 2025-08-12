@@ -1,3 +1,8 @@
+Version 1.3.4f (hotfix):
+- Endless Mode: added null-safety when starting duels to prevent a rare crash if the enemy fleet could not be generated.
+- Added safe faction fallbacks (pirates → independent) during fleet generation to increase robustness.
+- Shows a clear message and cancels gracefully if fleet generation still fails, instead of crashing.
+
 Version 1.3.4:
 -- Dependencies: Requires Nexerelin. LazyLib has been added as a dependency but is not yet used.
 - Added Fleet Battles improvements: allied fleet now reliably spawns and joins battles alongside the player.

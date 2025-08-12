@@ -236,8 +236,14 @@ public class GladiatorSociety_GladiatorAvailable extends BaseCommandPlugin {
                 if (plugin.getContext() instanceof FleetEncounterContext) {
                     FleetEncounterContext context = (FleetEncounterContext) plugin.getContext();
                     if (context.didPlayerWinEncounterOutright()) {
-                       
-                        int payment = (int) (content.currentMission.bountyvalue * context.getBattle().getPlayerInvolvementFraction());
+                        
+                        float involvement = 1f;
+                        try {
+                            if (context.getBattle() != null) {
+                                involvement = context.getBattle().getPlayerInvolvementFraction();
+                            }
+                        } catch (Throwable ignored) {}
+                        int payment = (int) (content.currentMission.bountyvalue * involvement);
                         Global.getSector().getPlayerFleet().getCargo().getCredits().add(payment);
                         content.addBountyDone(content.currentMission.missionid);
                     } else {
