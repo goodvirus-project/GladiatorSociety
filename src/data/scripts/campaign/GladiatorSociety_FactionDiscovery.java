@@ -2,6 +2,9 @@ package src.data.scripts.campaign;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.FactionAPI;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
+import com.fs.starfarer.api.impl.campaign.ids.FleetTypes;
 
 import java.util.HashSet;
 import java.util.List;
@@ -56,6 +59,20 @@ public class GladiatorSociety_FactionDiscovery {
             // Initial test: be permissive, include remaining factions (we can tighten later)
             res.combatFactions.add(id);
         }
+
+        // Stricter validation (optional): ensure faction can actually produce a minimal combat fleet
+        if (cfg.validateUsingFleetGen) {
+            java.util.Set<String> toRemove = new java.util.HashSet<>();
+            for (String id : res.combatFactions) {
+                if (!canGenerateFleet(id, cfg.minFleetPointsForValidity, cfg.validationFleetType)) {
+                    toRemove.add(id);
+                }
+            }
+            if (!toRemove.isEmpty()) {
+                res.combatFactions.removeAll(toRemove);
+            }
+        }
+
         Global.getSector().getPersistentData().put(PERSIST_KEY, res);
 
         if (cfg.debug) {
@@ -86,5 +103,32 @@ public class GladiatorSociety_FactionDiscovery {
         return new HashSet<>(cached.combatFactions);
     }
 
-    // Placeholder for future stricter validation if needed
+    // Try to create a small test fleet to validate a faction
+    private static boolean canGenerateFleet(String factionId, int minCombatPts, String validationFleetType) {
+        try {
+            FleetParamsV3 params = new FleetParamsV3(
+                    null,
+                    null,
+                    factionId,
+                    null,
+                    (validationFleetType == null || validationFleetType.isEmpty()) ? FleetTypes.PATROL_SMALL : validationFleetType,
+                    Math.max( (float) Math.ceil(minCombatPts * 0.6f), 5f),
+                    0f, 0f, 0f, 0f, 0f,
+                    1f
+            );
+            params.ignoreMarketFleetSizeMult = true;
+            CampaignFleetAPI fleet = GladiatorSociety_TinyFleetFactoryV2.createFleet(params);
+            if (fleet == null || fleet.isEmpty()) return false;
+            // sanity: ensure at least one non-fighter combat ship present
+            for (com.fs.starfarer.api.fleet.FleetMemberAPI m : fleet.getFleetData().getMembersListCopy()) {
+                if (!m.isFighterWing()) return true;
+            }
+            return false;
+        } catch (Throwable t) {
+            if (Global.getSettings().isDevMode()) {
+                Global.getLogger(GladiatorSociety_FactionDiscovery.class).warn("Faction validation failed for: " + factionId, t);
+            }
+            return false;
+        }
+    }
 }

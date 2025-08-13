@@ -3,6 +3,7 @@ package src.data.scripts.campaign;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
+import src.data.scripts.campaign.GladiatorSociety_FactionDiscoveryConfig;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -133,7 +134,16 @@ public class GladiatorSociety_EndlessContent {
             return p.pick();
         };
 
-        boolean useModded = Math.random() < 0.5;
+        // Read configurable split for vanilla vs modded
+        float split = 0.5f;
+        try {
+            GladiatorSociety_FactionDiscoveryConfig cfg = GladiatorSociety_FactionDiscoveryConfig.load();
+            split = cfg.vanillaModdedSplit;
+            if (Float.isNaN(split)) split = 0.5f;
+            if (split < 0f) split = 0f;
+            if (split > 1f) split = 1f;
+        } catch (Throwable ignored) {}
+        boolean useModded = Math.random() < split;
         String picked = useModded ? pickFrom.apply(moddedBucket) : pickFrom.apply(vanillaBucket);
         if (picked == null) picked = useModded ? pickFrom.apply(vanillaBucket) : pickFrom.apply(moddedBucket);
         if (picked == null) picked = Factions.PIRATES;

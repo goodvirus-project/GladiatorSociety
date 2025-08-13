@@ -42,6 +42,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import src.data.scripts.campaign.dataclass.GladiatorSociety_BountyData;
 import src.data.scripts.campaign.dataclass.GladiatorSociety_DataShip;
+import src.data.scripts.campaign.GladiatorSociety_FactionDiscoveryConfig;
 
 public class GladiatorSociety_TinyFleetFactoryV2 {
 
@@ -482,7 +483,19 @@ public class GladiatorSociety_TinyFleetFactoryV2 {
             for (FleetMemberAPI member : members) {
                 member.getRepairTracker().setCR(member.getRepairTracker().getMaxCR());
             }
-            GladiatorSociety_TinyFleetFactoryV2.addGSInteractionConfig(fleet);
+            // If this is a validator/test fleet, do NOT attach GS interaction or extra behavior
+            GladiatorSociety_FactionDiscoveryConfig cfg = GladiatorSociety_FactionDiscoveryConfig.load();
+            boolean isValidation = false;
+            try {
+                isValidation = params != null && params.fleetType != null && params.fleetType.equals(cfg.validationFleetType);
+            } catch (Throwable ignored) {}
+
+            if (!isValidation) {
+                GladiatorSociety_TinyFleetFactoryV2.addGSInteractionConfig(fleet);
+            } else {
+                // Mark to help other systems ignore this ephemeral fleet
+                try { fleet.getMemoryWithoutUpdate().set("$gs_validation", true); } catch (Throwable ignored) {}
+            }
 
             return fleet;
 

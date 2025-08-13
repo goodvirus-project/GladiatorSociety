@@ -1,3 +1,13 @@
+Version 1.3.6 (hotfix):
+- Dynamic Faction Detection: conflict-safe validation so only factions that can actually generate combat fleets are included.
+- New config flags in `data/config/gs_factions.json`:
+  - `validateUsingFleetGen` (bool): toggle validation via tiny test fleets.
+  - `validationFleetType` (string): special fleet type used only for validation to avoid conflicts with other mods.
+  - `vanillaModdedSplit` (0.0–1.0): controls vanilla vs modded selection chance (default 0.5 for equal chance).
+- Validation fleets are hidden from gameplay and skip GS-specific interaction setup to reduce mod conflicts.
+- Endless Mode uses the configurable vanilla/modded split; modded factions have the same chance to spawn as vanilla by default.
+- Minor robustness: safer clamping and guards around config usage.
+
 Version 1.3.5 (hotfix):
 - Endless Mode: added null-safety when starting duels to prevent a rare crash if the enemy fleet could not be generated.
 - Added safe faction fallbacks (pirates → independent) during fleet generation to increase robustness.
