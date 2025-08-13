@@ -1,5 +1,5 @@
 {
-    "changelogURL":"https://raw.githubusercontent.com/goodvirus-project/GladiatorSociety/refs/tags/1.3.6/changelogs.txt",
+    "changelogURL":"https://raw.githubusercontent.com/goodvirus-project/GladiatorSociety/refs/heads/main/changelogs.txt",
     "masterVersionFile":"https://raw.githubusercontent.com/goodvirus-project/GladiatorSociety/master/gladiatorsociety.version",
     "modName":"Gladiator Society",
     "modThreadId":33586,
