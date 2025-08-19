@@ -16,6 +16,7 @@ dist/
 gradle-project/.gradle/
 gradle-project/build/
 gradle-project/gradle.properties
+gradle-project
 
 # Keep: core mod content (these remain tracked by default)
 !/**/com/
